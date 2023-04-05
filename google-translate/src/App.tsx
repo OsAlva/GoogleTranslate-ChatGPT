@@ -1,10 +1,11 @@
 import { useReducer } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {type Action, type State } from './types.d';
 
 
 //1.Create a initial state
-const initialState = {
+const initialState: State = {
   fromLanguage: 'auto',
   toLanguage: 'en',
   fromText: '',
@@ -13,21 +14,21 @@ const initialState = {
 }
 
 //2. Create a reducer 
-function reducer(state: typeof initialState, action){
-  const {type, payload} = action
+function reducer(state: State, action: Action){
+  const {type} = action
 
   if(type === 'INTERCHANGE_LANGUAGES'){
     return {
       ...state,
-      fromLanguage: action.toLanguage,
-      toLanguage: action.fromLanguage
+      fromLanguage: state.toLanguage,
+      toLanguage: state.fromLanguage
     } 
   }
   //para cambiar idioma de origen
   if(type === 'SET_FROM_LANGUAGE'){
     return{ 
       ...state,
-      fromLanguage: payload
+      fromLanguage: action.payload
     }
   }
 
@@ -35,7 +36,7 @@ function reducer(state: typeof initialState, action){
   if(type === 'SET_TO_LANGUAGE'){
     return{
       ...state,
-      toLanguage: payload
+      toLanguage: action.payload
     }
   }
 
@@ -43,7 +44,7 @@ function reducer(state: typeof initialState, action){
     return{
       ...state,
       loading: true,
-      fromText: payload,
+      fromText: action.payload,
       result: ''
     }
   }
@@ -52,7 +53,7 @@ function reducer(state: typeof initialState, action){
     return{
       ...state,
       loading: false, 
-      result: payload
+      result: action.payload
     }
   }
 
@@ -62,11 +63,22 @@ function reducer(state: typeof initialState, action){
 
 function App()  {
   //3. Usar el hook useReducer
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [{
+    fromLanguage,
+    toLanguage,
+    fromText,
+    result,
+    loading
+  }, dispatch] = useReducer(reducer, initialState)
+
+  console.log({fromLanguage})
 
   return (
     <div className="App">
       <h1>Google Translate</h1>
+      <button onClick={() =>{
+        dispatch({type: 'SET_FROM_LANGUAGE', payload: 'es'})
+      }}>Cambiar a Español</button>
      
     </div>
   )
