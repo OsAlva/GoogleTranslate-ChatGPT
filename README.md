@@ -1,2 +1,2 @@
 # GoogleTranslate-ChatGPT
-Google translator developed with ChatGPT as a Typescript practice
+Google translator developed with ChatGPT as a Typescript practice.
